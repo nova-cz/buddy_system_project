@@ -134,16 +134,23 @@ class BuddySystem:
 		:param size: Tamaño solicitado (en MB)
 		:return: True si se asignó correctamente, False si no hay espacio o hay error
 		"""
-		# Validar que el tamaño sea potencia de 2 y no mayor al total
-		if not self._is_power_of_two(size) or size > self.total_size:
-			# Tamaño inválido
-			return False
-		# Verificar que el proceso no exista ya
+  # Redondear al siguiente múltiplo de potencia de 2
+		rounded = 1
+		while rounded < size:
+				rounded *= 2
+
+			# Si excede el tamaño total, no se puede asignar
+		if rounded > self.total_size:
+				return False, rounded
+
+			# Verificar que el proceso no exista ya
 		if self._process_exists(process_name):
-			# Ya hay un proceso con ese nombre
-			return False
-		# Buscar y asignar el bloque adecuado recursivamente desde la raíz
-		return self._allocate_recursive(self.root, process_name, size)
+				return False, rounded
+
+			# Buscar y asignar el bloque adecuado
+		ok = self._allocate_recursive(self.root, process_name, rounded)
+		return ok, rounded
+
 
 	def initialize_memory(self):
 		"""
