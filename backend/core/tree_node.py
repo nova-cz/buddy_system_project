@@ -1,8 +1,9 @@
 class TreeNode:
-    def __init__(self, size, is_free=True, process=None):
+    def __init__(self, size, is_free=True, process=None, process_size=None):
         self.size = size            # Tamaño del bloque de memoria
         self.is_free = is_free      # True si el bloque está libre
         self.process = process      # Nombre del proceso asignado (None si está libre)
+        self.process_size = process_size  # Tamaño real solicitado por el proceso
         self.left = None            # Hijo izquierdo (otro TreeNode o None)
         self.right = None           # Hijo derecho (otro TreeNode o None)
 
